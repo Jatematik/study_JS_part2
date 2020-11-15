@@ -28,14 +28,14 @@ window.addEventListener('DOMContentLoaded', function(){
             }
 
             if (timer.timeRemaining < 1){
-                clearInterval(setInterval(updateClock, 1000));
+                clearInterval(stopTimer);
                 timerHours.textContent = '00';
                 timerMinutes.textContent = '00';
                 timerSeconds.textContent = '00';
             }
         }
         
-        setInterval(updateClock, 1000);
+        let stopTimer = setInterval(updateClock, 1000);
         updateClock();
     }
 
