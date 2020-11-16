@@ -49,34 +49,15 @@ window.addEventListener('DOMContentLoaded', () => {
             menu = document.querySelector('menu'),
             closeBtn = document.querySelector('.close-btn'),
             menuItems = menu.querySelectorAll('ul>li');
-        let transformModal = -100;
-
 
         const handlerMenu = () => {
-            transformModal += 10;
-            menu.style.transform = `translateX(${transformModal}%)`;
-            if (transformModal < 0) {
-                window.requestAnimationFrame(handlerMenu);
-            }
+            menu.classList.toggle('active-menu');
         };
 
-        const modalAnimate = () => {
-            if (!menu.style.transform || menu.style.transform === `translateX(-100%)`) {
-                if (document.documentElement.clientWidth >= 768) {
-                    window.requestAnimationFrame(handlerMenu);
-                } else {
-                    menu.style.transform = `translateX(0)`;
-                }
-            } else {
-                menu.style.transform = `translateX(-100%)`;
-                transformModal = -100;
-            }
-        };
+        btnMenu.addEventListener('click', () => handlerMenu());
+        closeBtn.addEventListener('click', () => handlerMenu());
+        menuItems.forEach((item) => item.addEventListener('click', () => handlerMenu()));
 
-        btnMenu.addEventListener('click', () => modalAnimate());
-        closeBtn.addEventListener('click', () => modalAnimate());
-        menuItems.forEach((item) => item.addEventListener('click', () => modalAnimate()));
-        console.log(document.documentElement.clientWidth);
     };
     toggleMenu();
 
@@ -85,16 +66,34 @@ window.addEventListener('DOMContentLoaded', () => {
     const togglePopUp = () => {
         const popUp = document.querySelector('.popup'),
             btnPopup = document.querySelectorAll('.popup-btn'),
-            btnPopupClose = document.querySelector('.popup-close');
+            btnPopupClose = document.querySelector('.popup-close'),
+            popUpContent = document.querySelector('.popup-content');
+
+        let transformModal = 0;
+
+        const modalAnimate = () => {
+            transformModal++;
+            console.log(transformModal);
+            popUpContent.style.left = `${transformModal}%`;
+            if (transformModal < 38) {
+                window.requestAnimationFrame(modalAnimate);
+            }
+        };
 
         btnPopup.forEach((item) => {
             item.addEventListener('click', () => {
                 popUp.style.display = `block`;
+                if (document.documentElement.clientWidth > 768) {
+                    modalAnimate();
+                } else {
+                    popUpContent.style.left = `38%`;
+                }
             });
         });
 
         btnPopupClose.addEventListener('click', () => {
             popUp.style.display = `none`;
+            transformModal = 0;
         });
 
     };
