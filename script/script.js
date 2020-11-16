@@ -159,6 +159,7 @@ window.addEventListener('DOMContentLoaded', () => {
         }
         
         const createDot = document.querySelectorAll('.dot');
+        createDot[0].classList.add('dot-active');
 
         let currentSlide = 0,
             interval;
