@@ -1,23 +1,25 @@
-window.addEventListener('DOMContentLoaded', function(){
-    'use strict';
+'use strict';
+
+window.addEventListener('DOMContentLoaded', () => {
+
     // Timer
     function countTimer(deadLine) {
-        let timerHours = document.querySelector('#timer-hours'),
+        const timerHours = document.querySelector('#timer-hours'),
             timerMinutes = document.querySelector('#timer-minutes'),
             timerSeconds = document.querySelector('#timer-seconds');
 
-        function getTimeRemaining(){
-            let dateStop = new Date(deadLine).getTime(),
-            dateNow = new Date().getTime(),
-            timeRemaining = (dateStop - dateNow) / 1000,
-            seconds = Math.floor(timeRemaining % 60),
-            minutes = Math.floor((timeRemaining/60)%60),
-            hours = Math.floor(timeRemaining/60/60);
-            return {timeRemaining, hours, minutes, seconds};
+        function getTimeRemaining() {
+            const dateStop = new Date(deadLine).getTime(),
+                dateNow = new Date().getTime(),
+                timeRemaining = (dateStop - dateNow) / 1000,
+                seconds = Math.floor(timeRemaining % 60),
+                minutes = Math.floor((timeRemaining / 60) % 60),
+                hours = Math.floor(timeRemaining / 60 / 60);
+            return { timeRemaining, hours, minutes, seconds };
         }
 
-        function updateClock(){
-            let timer = getTimeRemaining();
+        function updateClock() {
+            const timer = getTimeRemaining();
 
             timerHours.textContent = timer.hours;
             timerMinutes.textContent = ('0' + timer.minutes).slice(-2);
@@ -27,18 +29,74 @@ window.addEventListener('DOMContentLoaded', function(){
                 timerHours.textContent = ('0' + timer.hours).slice(-2);
             }
 
-            if (timer.timeRemaining < 1){
+            if (timer.timeRemaining < 1) {
                 clearInterval(stopTimer);
                 timerHours.textContent = '00';
                 timerMinutes.textContent = '00';
                 timerSeconds.textContent = '00';
             }
         }
-        
-        let stopTimer = setInterval(updateClock, 1000);
+
+        const stopTimer = setInterval(updateClock, 1000);
         updateClock();
     }
 
     countTimer('20 nov 2020 00:00');
 
+    // Menu
+    const toggleMenu = () => {
+        const btnMenu = document.querySelector('.menu'),
+            menu = document.querySelector('menu'),
+            closeBtn = document.querySelector('.close-btn'),
+            menuItems = menu.querySelectorAll('ul>li');
+        let transformModal = -100;
+
+
+        const handlerMenu = () => {
+            transformModal += 10;
+            menu.style.transform = `translateX(${transformModal}%)`;
+            if (transformModal < 0) {
+                window.requestAnimationFrame(handlerMenu);
+            }
+        };
+
+        const modalAnimate = () => {
+            if (!menu.style.transform || menu.style.transform === `translateX(-100%)`) {
+                if (document.documentElement.clientWidth >= 768) {
+                    window.requestAnimationFrame(handlerMenu);
+                } else {
+                    menu.style.transform = `translateX(0)`;
+                }
+            } else {
+                menu.style.transform = `translateX(-100%)`;
+                transformModal = -100;
+            }
+        };
+
+        btnMenu.addEventListener('click', () => modalAnimate());
+        closeBtn.addEventListener('click', () => modalAnimate());
+        menuItems.forEach((item) => item.addEventListener('click', () => modalAnimate()));
+        console.log(document.documentElement.clientWidth);
+    };
+    toggleMenu();
+
+    // popup
+
+    const togglePopUp = () => {
+        const popUp = document.querySelector('.popup'),
+            btnPopup = document.querySelectorAll('.popup-btn'),
+            btnPopupClose = document.querySelector('.popup-close');
+
+        btnPopup.forEach((item) => {
+            item.addEventListener('click', () => {
+                popUp.style.display = `block`;
+            });
+        });
+
+        btnPopupClose.addEventListener('click', () => {
+            popUp.style.display = `none`;
+        });
+
+    };
+    togglePopUp();
 });
