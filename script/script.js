@@ -46,21 +46,18 @@ window.addEventListener('DOMContentLoaded', () => {
     // Menu
     const toggleMenu = () => {
         const btnMenu = document.querySelector('.menu'),
-            menu = document.querySelector('menu'),
-            closeBtn = document.querySelector('.close-btn'),
-            menuItems = menu.querySelectorAll('ul>li');
+            menu = document.querySelector('menu');
         let transformModal = -100;
 
-
         const handlerMenu = () => {
-            transformModal += 10;
+            transformModal += 5;
             menu.style.transform = `translateX(${transformModal}%)`;
             if (transformModal < 0) {
                 window.requestAnimationFrame(handlerMenu);
             }
         };
 
-        const modalAnimate = () => {
+        const menuAnimate = () => {
             if (!menu.style.transform || menu.style.transform === `translateX(-100%)`) {
                 if (document.documentElement.clientWidth >= 768) {
                     window.requestAnimationFrame(handlerMenu);
@@ -73,19 +70,22 @@ window.addEventListener('DOMContentLoaded', () => {
             }
         };
 
-        btnMenu.addEventListener('click', () => modalAnimate());
-        closeBtn.addEventListener('click', () => modalAnimate());
-        menuItems.forEach((item) => item.addEventListener('click', () => modalAnimate()));
-        console.log(document.documentElement.clientWidth);
+        menu.addEventListener('click', (event) => {
+            if (!event.target.matches('.close-btn') && !event.target.matches('ul>li>a')) {
+                return;
+            }
+            menuAnimate(event);
+        });
+        btnMenu.addEventListener('click', () => menuAnimate());
+
     };
+
     toggleMenu();
 
     // popup
-
     const togglePopUp = () => {
         const popUp = document.querySelector('.popup'),
-            btnPopup = document.querySelectorAll('.popup-btn'),
-            btnPopupClose = document.querySelector('.popup-close');
+            btnPopup = document.querySelectorAll('.popup-btn');
 
         btnPopup.forEach((item) => {
             item.addEventListener('click', () => {
@@ -93,10 +93,54 @@ window.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        btnPopupClose.addEventListener('click', () => {
-            popUp.style.display = `none`;
-        });
+        popUp.addEventListener('click', (event) => {
+            let target = event.target;
 
+            if (target.matches('.popup-close')) {
+                popUp.style.display = `none`;
+            } else {
+                target = target.closest('.popup-content');
+                if (!target) {
+                    popUp.style.display = `none`;
+                }
+            }
+        });
     };
+
     togglePopUp();
+
+    // tabs
+    const tabs = () => {
+        const tabHeader = document.querySelector('.service-header'),
+            tab = tabHeader.querySelectorAll('.service-header-tab'),
+            tabContent = document.querySelectorAll('.service-tab');
+        
+        const toggleTabContent = (index) => {
+            for(let i = 0; i < tabContent.length; i++) {
+                if (index === i) {
+                    tab[i].classList.add('active');
+                    tabContent[i].classList.remove('d-none');
+                } else {
+                    tab[i].classList.remove('active');
+                    tabContent[i].classList.add('d-none');
+                }
+            }
+        };
+        tabHeader.addEventListener('click', (event) => {
+            let target = event.target;
+                target = target.closest('.service-header-tab');
+
+            if (target) {
+                tab.forEach((item, i) => {
+                    if (item === target) {
+                        toggleTabContent(i);
+                    }
+                });
+            }
+
+        });
+    };
+
+    tabs();
+
 });
