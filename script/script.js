@@ -75,14 +75,14 @@ window.addEventListener('DOMContentLoaded', () => {
             btnPopup = document.querySelectorAll('.popup-btn'),
             btnPopupClose = document.querySelector('.popup-close'),
             popUpContent = document.querySelector('.popup-content');
-
+        popUpContent.style.transform = `translate(-50%)`;
         let transformModal = 0;
 
         const modalAnimate = () => {
             transformModal++;
             console.log(transformModal);
             popUpContent.style.left = `${transformModal}%`;
-            if (transformModal < 38) {
+            if (transformModal < 50) {
                 window.requestAnimationFrame(modalAnimate);
             }
         };
@@ -93,7 +93,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 if (document.documentElement.clientWidth > 768) {
                     modalAnimate();
                 } else {
-                    popUpContent.style.left = `38%`;
+                    popUpContent.style.left = `50%`;
                 }
             });
         });
