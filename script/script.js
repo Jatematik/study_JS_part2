@@ -147,8 +147,18 @@ window.addEventListener('DOMContentLoaded', () => {
     const slider = () => {
         const slide = document.querySelectorAll('.portfolio-item'),
             btn = document.querySelectorAll('.portfolio-btn'),
-            dot = document.querySelectorAll('.dot'),
-            slider = document.querySelector('.portfolio-content');
+            slider = document.querySelector('.portfolio-content'),
+            dots = document.querySelector('.portfolio-dots');
+
+        const dot = document.createElement('li');
+         
+        for (let i = 0; i < slide.length; i++) {
+            const dotClone = dot.cloneNode();
+            dotClone.classList.add('dot');  
+            dots.append(dotClone);
+        }
+        
+        const createDot = document.querySelectorAll('.dot');
 
         let currentSlide = 0,
             interval;
@@ -163,13 +173,13 @@ window.addEventListener('DOMContentLoaded', () => {
 
         const autoPlaySlide = () => {
             prevSlide(slide, currentSlide, 'portfolio-item-active');
-            prevSlide(dot, currentSlide, 'dot-active');
+            prevSlide(createDot, currentSlide, 'dot-active');
             currentSlide++;
             if (currentSlide >= slide.length) {
                 currentSlide = 0;
             }
             nextSlide(slide, currentSlide, 'portfolio-item-active');
-            nextSlide(dot, currentSlide, 'dot-active');
+            nextSlide(createDot, currentSlide, 'dot-active');
         };
 
         const startSlide = (time = 3000) => {
@@ -189,14 +199,14 @@ window.addEventListener('DOMContentLoaded', () => {
             }
 
             prevSlide(slide, currentSlide, 'portfolio-item-active');
-            prevSlide(dot, currentSlide, 'dot-active');
+            prevSlide(createDot, currentSlide, 'dot-active');
 
             if (target.matches('#arrow-right')) {
                 currentSlide++;
             } else if (target.matches('#arrow-left')) {
                 currentSlide--;
             } else if (target.matches('.dot')) {
-                dot.forEach((item, index) => {
+                createDot.forEach((item, index) => {
                     if (item === target) {
                         currentSlide = index;
                     }
@@ -212,7 +222,7 @@ window.addEventListener('DOMContentLoaded', () => {
             }
 
             nextSlide(slide, currentSlide, 'portfolio-item-active');
-            nextSlide(dot, currentSlide, 'dot-active');
+            nextSlide(createDot, currentSlide, 'dot-active');
         });
 
 
