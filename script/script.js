@@ -55,11 +55,9 @@ window.addEventListener('DOMContentLoaded', () => {
         };
 
         btnMenu.addEventListener('click', () => handlerMenu());
-        closeBtn.addEventListener('click', () => handlerMenu());
-        menuItems.forEach((item) => item.addEventListener('click', () => handlerMenu()));
 
         menu.addEventListener('click', (event) => {
-            if (!event.target.matches('.close-btn') || !event.target.matches('ul>li>a')) {
+            if (!event.target.matches('.close-btn') && !event.target.matches('ul>li>a')) {
                 return;
             }
             handlerMenu(event);
