@@ -245,4 +245,38 @@ window.addEventListener('DOMContentLoaded', () => {
     };
 
     slider();
+
+    // Hover for img
+
+    const hoverImg = () => {
+        const img = document.querySelectorAll('.command__photo');
+
+        img.forEach((item) => {
+            let a = item.getAttribute('src');
+            item.addEventListener('mouseover', (event) => {
+                event.target.src = event.target.dataset.img;
+            });
+            item.addEventListener('mouseleave', (event) => {
+                event.target.src = a;
+            });
+
+        });
+    };
+
+    hoverImg();
+
+    // Validate calculator
+
+    const validate = () => {
+        const inputBlock = document.querySelector('.calc-block');
+
+        inputBlock.addEventListener('input', (event) => {
+            const target = event.target;
+            target.value = target.value.replace(/^0|\D/g, '');
+            console.log(target);
+        });
+    };
+
+    validate();
+
 });
