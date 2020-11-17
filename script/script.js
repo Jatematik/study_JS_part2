@@ -268,12 +268,7 @@ window.addEventListener('DOMContentLoaded', () => {
     // Validate calculator
 
     const validate = () => {
-        const calcBlock = document.querySelector('.calc-block'),
-            calcType = document.querySelector('.calc-type'),
-            calcSquare = document.querySelector('.calc-square'),
-            calcCount = document.querySelector('.calc-count'),
-            calcDay = document.querySelector('.calc-day'),
-            totalValue = document.getElementById('total');
+        const calcBlock = document.querySelector('.calc-block');
 
         calcBlock.addEventListener('input', (event) => {
             const target = event.target;
