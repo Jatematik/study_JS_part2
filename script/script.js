@@ -268,15 +268,22 @@ window.addEventListener('DOMContentLoaded', () => {
     // Validate calculator
 
     const validate = () => {
-        const inputBlock = document.querySelector('.calc-block');
+        const calcBlock = document.querySelector('.calc-block'),
+            calcType = document.querySelector('.calc-type'),
+            calcSquare = document.querySelector('.calc-square'),
+            calcCount = document.querySelector('.calc-count'),
+            calcDay = document.querySelector('.calc-day'),
+            totalValue = document.getElementById('total');
 
-        inputBlock.addEventListener('input', (event) => {
+        calcBlock.addEventListener('input', (event) => {
             const target = event.target;
-            target.value = target.value.replace(/^0|\D/g, '');
-            console.log(target);
+            if (target.matches('.calc-square') || target.matches('.calc-count') || target.matches('.calc-day')) {
+                target.value = target.value.replace(/^0|\D/g, '');
+            }
         });
     };
 
     validate();
+
 
 });
