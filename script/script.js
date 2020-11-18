@@ -78,7 +78,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
         const modalAnimate = () => {
             transformModal++;
-            console.log(transformModal);
             popUpContent.style.left = `${transformModal}%`;
             if (transformModal < 50) {
                 window.requestAnimationFrame(modalAnimate);
@@ -325,4 +324,140 @@ window.addEventListener('DOMContentLoaded', () => {
 
     calc(100);
 
+    //send-ajax-form
+
+    const sendForm = () => {
+        const errorMessage = 'Что-то пошло не так...',
+            loadMessage = 'Загрузка...',
+            successMessage = 'Спасибо! Мы скоро с вами свяжемся!';
+
+        const form = document.getElementById('form1'),
+            formModal = document.getElementById('form3'),
+            formFooter = document.getElementById('form2');
+        const statusMessage = document.createElement('div');
+        statusMessage.style.cssText = `font-size: 2rem;
+        color: white;`;
+
+        const inputForm = form.querySelectorAll('input'),
+            inputFormModal = formModal.querySelectorAll('input'),
+            inputFormFooter = formFooter.querySelectorAll('input');
+
+        //validate in forms
+
+        inputForm.forEach(item => {
+            item.addEventListener('input', () => {
+                if (item.matches('#form1-phone')) {
+                    item.value = item.value.replace(/(?!^\+)\D/g, '');
+                }
+                if (item.matches('#form1-name')) {
+                    item.value = item.value.replace(/(?!\s|[а-яА-Я])\D/g, '');
+                }
+            });    
+        });
+
+        inputFormModal.forEach(item => {
+            item.addEventListener('input', () => {
+                if (item.matches('#form3-phone')) {
+                    item.value = item.value.replace(/(?!^\+)\D/g, '');
+                }
+                if (item.matches('#form3-name')) {
+                    item.value = item.value.replace(/(?!\s|[а-яА-Я])\D/g, '');
+                }
+            });
+        });
+
+        inputFormFooter.forEach(item => {
+            item.addEventListener('input', () => {
+                if (item.matches('#form2-phone')) {
+                    item.value = item.value.replace(/(?!^\+)\D/g, '');
+                }
+                if (item.matches('#form2-name') || item.matches('#form2-message')) {
+                    item.value = item.value.replace(/(?!\s|[а-яА-Я])\D/g, '');
+                }
+            });
+        });
+
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+            form.appendChild(statusMessage);
+            statusMessage.textContent = loadMessage;
+
+            const formData = new FormData(form);
+            let body = {};
+            formData.forEach((val, key) => {
+                body[key] = val;
+            });
+            postData(body, () => {
+                statusMessage.textContent = successMessage;
+            }, (error) => {
+                statusMessage.textContent = errorMessage;
+                console.error(error);
+            });
+            inputForm.forEach((item) => {
+                item.value = '';
+            });
+        });
+
+        formModal.addEventListener('submit', (event) => {
+            event.preventDefault();
+            formModal.appendChild(statusMessage);
+            statusMessage.textContent = loadMessage;
+
+            const formDataModal = new FormData(formModal);
+            let bodyModal = {};
+            formDataModal.forEach((val, key) => {
+                bodyModal[key] = val;
+            });
+            postData(bodyModal, () => {
+                statusMessage.textContent = successMessage;
+            }, (error) => {
+                statusMessage.textContent = errorMessage;
+                console.error(error);
+            });
+            inputFormModal.forEach((item) => {   
+                item.value = '';
+            });
+        });
+
+        formFooter.addEventListener('submit', (event) => {
+            event.preventDefault();
+            formFooter.appendChild(statusMessage);
+            statusMessage.textContent = loadMessage;
+
+            const formFooterData = new FormData(formFooter);
+            let bodyFooter = {};
+            formFooterData.forEach((val, key) => {
+                bodyFooter[key] = val;
+            });
+            console.log(bodyFooter);
+            postData(bodyFooter, () => {
+                statusMessage.textContent = successMessage;
+            }, (error) => {
+                statusMessage.textContent = errorMessage;
+                console.error(error);
+            });
+            inputFormFooter.forEach((item) => {   
+                item.value = '';
+            });
+        });
+
+        const postData = (body, outputData, errorData) => {
+            const request = new XMLHttpRequest();
+            request.addEventListener('readystatechange', () => {
+                if (request.readyState !== 4) {
+                    return;
+                }
+                if (request.status === 200) {
+                    outputData();
+                } else {
+                    errorData(request.status);
+                }
+            });
+            request.open('POST', './server.php');
+            request.setRequestHeader('Content-Type', 'application/json');
+            request.send(JSON.stringify(body));
+        };
+    };
+
+    sendForm();
 });
