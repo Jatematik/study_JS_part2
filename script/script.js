@@ -345,6 +345,9 @@ window.addEventListener('DOMContentLoaded', () => {
         //validate in forms
 
         inputForm.forEach(item => {
+            if (item === document.getElementById('form1-email')) {
+                item.setAttribute('required', '');
+            }
             item.addEventListener('input', () => {
                 if (item.matches('#form1-phone')) {
                     item.value = item.value.replace(/(?!^\+)\D/g, '');
@@ -356,6 +359,9 @@ window.addEventListener('DOMContentLoaded', () => {
         });
 
         inputFormModal.forEach(item => {
+            if (item === document.getElementById('form3-email')) {
+                item.setAttribute('required', '');
+            }
             item.addEventListener('input', () => {
                 if (item.matches('#form3-phone')) {
                     item.value = item.value.replace(/(?!^\+)\D/g, '');
@@ -367,6 +373,9 @@ window.addEventListener('DOMContentLoaded', () => {
         });
 
         inputFormFooter.forEach(item => {
+            if (item === document.getElementById('form2-email')) {
+                item.setAttribute('required', '');
+            }
             item.addEventListener('input', () => {
                 if (item.matches('#form2-phone')) {
                     item.value = item.value.replace(/(?!^\+)\D/g, '');
@@ -395,10 +404,20 @@ window.addEventListener('DOMContentLoaded', () => {
                     throw new Error('status network not 200.');
                 }
                 statusMessage.textContent = successMessage;
+                function deleteMessageTime(){
+                    statusMessage.remove();
+                    clearInterval(deleteMessage);
+                }
+                let deleteMessage = setInterval(deleteMessageTime, 5000);
             })
             .catch((error) => {
                 statusMessage.textContent = errorMessage;
                 console.log(error);
+                function deleteMessageTime(){
+                    statusMessage.remove();
+                    clearInterval(deleteMessage);
+                }
+                let deleteMessage = setInterval(deleteMessageTime, 5000);
             }).finally(() => {
                 inputForm.forEach((item) => {     
                     item.value = '';
@@ -421,10 +440,20 @@ window.addEventListener('DOMContentLoaded', () => {
                     throw new Error('status network not 200.');
                 }
                 statusMessage.textContent = successMessage;
+                function deleteMessageTime(){
+                    statusMessage.remove();
+                    clearInterval(deleteMessage);
+                }
+                let deleteMessage = setInterval(deleteMessageTime, 5000);
             })
             .catch((error) => {
                 statusMessage.textContent = errorMessage;
                 console.log(error);
+                function deleteMessageTime(){
+                    statusMessage.remove();
+                    clearInterval(deleteMessage);
+                }
+                let deleteMessage = setInterval(deleteMessageTime, 5000);
             }).finally(() => {
                 inputFormModal.forEach((item) => {     
                     item.value = '';
@@ -447,10 +476,20 @@ window.addEventListener('DOMContentLoaded', () => {
                     throw new Error('status network not 200.');
                 }
                 statusMessage.textContent = successMessage;
+                function deleteMessageTime(){
+                    statusMessage.remove();
+                    clearInterval(deleteMessage);
+                }
+                let deleteMessage = setInterval(deleteMessageTime, 5000);
             })
             .catch((error) => {
                 statusMessage.textContent = errorMessage;
                 console.log(error);
+                function deleteMessageTime(){
+                    statusMessage.remove();
+                    clearInterval(deleteMessage);
+                }
+                let deleteMessage = setInterval(deleteMessageTime, 5000);
             }).finally(() => {
                 inputFormFooter.forEach((item) => {     
                     item.value = '';
