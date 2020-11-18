@@ -377,6 +377,9 @@ window.addEventListener('DOMContentLoaded', () => {
             });
         });
 
+
+        // form submit
+
         form.addEventListener('submit', (event) => {
             event.preventDefault();
             form.appendChild(statusMessage);
@@ -387,14 +390,16 @@ window.addEventListener('DOMContentLoaded', () => {
             formData.forEach((val, key) => {
                 body[key] = val;
             });
-            postData(body, () => {
+            postData(body).then(() => {
                 statusMessage.textContent = successMessage;
-            }, (error) => {
+            })
+            .catch((error) => {
                 statusMessage.textContent = errorMessage;
-                console.error(error);
-            });
-            inputForm.forEach((item) => {
-                item.value = '';
+                console.log(error);
+            }).finally(() => {
+                inputForm.forEach((item) => {     
+                    item.value = '';
+                });
             });
         });
 
@@ -408,14 +413,16 @@ window.addEventListener('DOMContentLoaded', () => {
             formDataModal.forEach((val, key) => {
                 bodyModal[key] = val;
             });
-            postData(bodyModal, () => {
+            postData(bodyModal).then(() => {
                 statusMessage.textContent = successMessage;
-            }, (error) => {
+            })
+            .catch((error) => {
                 statusMessage.textContent = errorMessage;
-                console.error(error);
-            });
-            inputFormModal.forEach((item) => {   
-                item.value = '';
+                console.log(error);
+            }).finally(() => {
+                inputFormModal.forEach((item) => {     
+                    item.value = '';
+                });
             });
         });
 
@@ -429,33 +436,38 @@ window.addEventListener('DOMContentLoaded', () => {
             formFooterData.forEach((val, key) => {
                 bodyFooter[key] = val;
             });
-            console.log(bodyFooter);
-            postData(bodyFooter, () => {
+            postData(bodyFooter).then(() => {
                 statusMessage.textContent = successMessage;
-            }, (error) => {
+            })
+            .catch((error) => {
                 statusMessage.textContent = errorMessage;
-                console.error(error);
-            });
-            inputFormFooter.forEach((item) => {   
-                item.value = '';
+                console.log(error);
+            }).finally(() => {
+                inputFormFooter.forEach((item) => {     
+                    item.value = '';
+                });
             });
         });
 
-        const postData = (body, outputData, errorData) => {
-            const request = new XMLHttpRequest();
-            request.addEventListener('readystatechange', () => {
-                if (request.readyState !== 4) {
-                    return;
-                }
-                if (request.status === 200) {
-                    outputData();
-                } else {
-                    errorData(request.status);
-                }
+        // Promise
+
+        const postData = (body) => {
+            return new Promise((resolve, reject) => {
+                const request = new XMLHttpRequest();
+                request.addEventListener('readystatechange', () => {
+                    if (request.readyState !== 4) {
+                        return;
+                    }
+                    if (request.status === 200) {
+                        resolve();
+                    } else {
+                        reject(request.status);
+                    }
+                });
+                request.open('POST', './server.php');
+                request.setRequestHeader('Content-Type', 'application/json');
+                request.send(JSON.stringify(body));
             });
-            request.open('POST', './server.php');
-            request.setRequestHeader('Content-Type', 'application/json');
-            request.send(JSON.stringify(body));
         };
     };
 
