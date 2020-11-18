@@ -390,7 +390,10 @@ window.addEventListener('DOMContentLoaded', () => {
             formData.forEach((val, key) => {
                 body[key] = val;
             });
-            postData(body).then(() => {
+            postData(body).then((response) => {
+                if (response.status !== 200) {
+                    throw new Error('status network not 200.');
+                }
                 statusMessage.textContent = successMessage;
             })
             .catch((error) => {
@@ -413,7 +416,10 @@ window.addEventListener('DOMContentLoaded', () => {
             formDataModal.forEach((val, key) => {
                 bodyModal[key] = val;
             });
-            postData(bodyModal).then(() => {
+            postData(bodyModal).then((response) => {
+                if (response.status !== 200) {
+                    throw new Error('status network not 200.');
+                }
                 statusMessage.textContent = successMessage;
             })
             .catch((error) => {
@@ -436,7 +442,10 @@ window.addEventListener('DOMContentLoaded', () => {
             formFooterData.forEach((val, key) => {
                 bodyFooter[key] = val;
             });
-            postData(bodyFooter).then(() => {
+            postData(bodyFooter).then((response) => {
+                if (response.status !== 200) {
+                    throw new Error('status network not 200.');
+                }
                 statusMessage.textContent = successMessage;
             })
             .catch((error) => {
@@ -452,21 +461,10 @@ window.addEventListener('DOMContentLoaded', () => {
         // Promise
 
         const postData = (body) => {
-            return new Promise((resolve, reject) => {
-                const request = new XMLHttpRequest();
-                request.addEventListener('readystatechange', () => {
-                    if (request.readyState !== 4) {
-                        return;
-                    }
-                    if (request.status === 200) {
-                        resolve();
-                    } else {
-                        reject(request.status);
-                    }
-                });
-                request.open('POST', './server.php');
-                request.setRequestHeader('Content-Type', 'application/json');
-                request.send(JSON.stringify(body));
+            return fetch('./server.php', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(body)
             });
         };
     };
