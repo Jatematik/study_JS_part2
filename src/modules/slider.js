@@ -1,0 +1,99 @@
+const slider = () => {
+    const slide = document.querySelectorAll('.portfolio-item'),
+        btn = document.querySelectorAll('.portfolio-btn'),
+        slider = document.querySelector('.portfolio-content'),
+        dots = document.querySelector('.portfolio-dots');
+
+    const dot = document.createElement('li');
+        
+    for (let i = 0; i < slide.length; i++) {
+        const dotClone = dot.cloneNode();
+        dotClone.classList.add('dot');  
+        dots.append(dotClone);
+    }
+    
+    const createDot = document.querySelectorAll('.dot');
+    createDot[0].classList.add('dot-active');
+
+    let currentSlide = 0,
+        interval;
+
+    const prevSlide = (elem, index, strClass) => {
+        elem[index].classList.remove(strClass);
+    };
+
+    const nextSlide = (elem, index, strClass) => {
+        elem[index].classList.add(strClass);
+    };
+
+    const autoPlaySlide = () => {
+        prevSlide(slide, currentSlide, 'portfolio-item-active');
+        prevSlide(createDot, currentSlide, 'dot-active');
+        currentSlide++;
+        if (currentSlide >= slide.length) {
+            currentSlide = 0;
+        }
+        nextSlide(slide, currentSlide, 'portfolio-item-active');
+        nextSlide(createDot, currentSlide, 'dot-active');
+    };
+
+    const startSlide = (time = 3000) => {
+        interval = setInterval(autoPlaySlide, time);
+    };
+
+    const stopSlide = () => {
+        clearInterval(interval);
+    };
+
+    slider.addEventListener('click', (event) => {
+        event.preventDefault();
+        let target = event.target;
+
+        if (!target.matches('.portfolio-btn, .dot')) {
+            return;
+        }
+
+        prevSlide(slide, currentSlide, 'portfolio-item-active');
+        prevSlide(createDot, currentSlide, 'dot-active');
+
+        if (target.matches('#arrow-right')) {
+            currentSlide++;
+        } else if (target.matches('#arrow-left')) {
+            currentSlide--;
+        } else if (target.matches('.dot')) {
+            createDot.forEach((item, index) => {
+                if (item === target) {
+                    currentSlide = index;
+                }
+            });
+        }
+
+        if (currentSlide >= slide.length) {
+            currentSlide = 0;
+        }
+
+        if (currentSlide < 0) {
+            currentSlide = slide.length - 1;
+        }
+
+        nextSlide(slide, currentSlide, 'portfolio-item-active');
+        nextSlide(createDot, currentSlide, 'dot-active');
+    });
+
+
+    slider.addEventListener('mouseover', (event) => {
+        if (event.target.matches('.portfolio-btn') || event.target.matches('.dot')){
+            stopSlide();
+        }
+    });
+
+    slider.addEventListener('mouseout', (event) => {
+        if (event.target.matches('.portfolio-btn') || event.target.matches('.dot')){
+            startSlide();
+        }
+    });
+
+    startSlide(1500);
+};
+
+export default slider;
