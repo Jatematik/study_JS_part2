@@ -25,7 +25,7 @@ const sendForm = () => {
                 item.value = item.value.replace(/(?!^\+)\D/g, '');
             }
             if (item.matches('#form1-name')) {
-                item.value = item.value.replace(/(?!\s|[а-яА-Я])\D/g, '');
+                item.value = item.value.replace(/(?![а-яА-Я])\D|[0-9]/g, '');
             }
         });    
     });
@@ -39,7 +39,7 @@ const sendForm = () => {
                 item.value = item.value.replace(/(?!^\+)\D/g, '');
             }
             if (item.matches('#form3-name')) {
-                item.value = item.value.replace(/(?!\s|[а-яА-Я])\D/g, '');
+                item.value = item.value.replace(/(?![а-яА-Я])\D|[0-9]/g, '');
             }
         });
     });
@@ -49,11 +49,14 @@ const sendForm = () => {
             item.setAttribute('required', '');
         }
         item.addEventListener('input', () => {
-            if (item.matches('#form2-phone')) {
-                item.value = item.value.replace(/(?!^\+)\D/g, '');
+            if (item.matches('#form2-message')) {
+                item.value = item.value.replace(/(?!\s|\.|\!|\,|\?|[а-яА-Я])\D/g, '');
             }
-            if (item.matches('#form2-name') || item.matches('#form2-message')) {
-                item.value = item.value.replace(/(?!\s|[а-яА-Я])\D/g, '');
+            if (item.matches('#form2-phone')) {
+                item.value = item.value.replace(/(?!^\+|[0-9])\D/g, '');
+            }
+            if (item.matches('#form2-name')) {
+                item.value = item.value.replace(/(?![а-яА-Я])\D|[0-9]/g, '');
             }
         });
     });
